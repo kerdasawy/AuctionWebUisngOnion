@@ -55,8 +55,8 @@ namespace AuctionWeb.Persistence.Migrations
                     b.Property<int>("Auction_ID")
                         .HasColumnType("int");
 
-                    b.Property<float>("BidValue")
-                        .HasColumnType("real");
+                    b.Property<decimal>("BidValue")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("BidderId")
                         .HasColumnType("int");
@@ -116,6 +116,44 @@ namespace AuctionWeb.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Bidders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BidderName = "Abdo",
+                            ContactName = "MR Abdo"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BidderName = "Abdo2",
+                            ContactName = "MR Abdo2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BidderName = "Abdo3",
+                            ContactName = "MR Abdo3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BidderName = "Abdo4",
+                            ContactName = "MR Abdo4"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BidderName = "Abdo5",
+                            ContactName = "MR Abdo5"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            BidderName = "Abdo6",
+                            ContactName = "MR Abdo6"
+                        });
                 });
 
             modelBuilder.Entity("AuctionWeb.Domain.Entities.BidderAuction", b =>
@@ -156,6 +194,38 @@ namespace AuctionWeb.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Items");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ItemName = "Histrorical Watch",
+                            Price = 10000m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ItemName = "Histrorical Glass",
+                            Price = 20000m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ItemName = "Histrorical Sword",
+                            Price = 50000m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ItemName = "Histrorical Hat",
+                            Price = 5000m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ItemName = "Histrorical Paint",
+                            Price = 100000m
+                        });
                 });
 
             modelBuilder.Entity("AuctionWeb.Domain.Entities.Auction", b =>

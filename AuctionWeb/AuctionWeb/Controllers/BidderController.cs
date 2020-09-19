@@ -26,7 +26,7 @@ namespace AuctionWeb.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [HttpGet]
+         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAll()
         {

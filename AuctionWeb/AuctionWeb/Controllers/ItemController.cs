@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuctionWeb.Controllers
 {
     [ApiController]
-    [Route("api/v{version:apiVersion}/Bidder")]
+    [Route("api/v{version:apiVersion}/item")]
     [ApiVersion("1.0")]
     public class ItemController : ControllerBase
     {
@@ -26,14 +26,14 @@ namespace AuctionWeb.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [HttpGet]
+         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await Mediator.Send(new GetAllItemQuery()));
         }
 
-        [HttpGet("{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await Mediator.Send(new GetItemByIdQuery { Id = id }));

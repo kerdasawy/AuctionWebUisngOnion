@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuctionWeb.Controllers
 {
     [ApiController]
-    [Route("api/v{version:apiVersion}/Bidder")]
+    [Route("api/v{version:apiVersion}/Auction")]
     [ApiVersion("1.0")]
     public class AuctionController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace AuctionWeb.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [HttpGet]
+         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
@@ -55,5 +55,12 @@ namespace AuctionWeb.Controllers
             }
             return Ok(await Mediator.Send(command));
         }
+
+        //[HttpPut("{id} , {bID} , {bid}")]
+        //public async Task<IActionResult> Bid( AddBidToAuctionCommand command)
+        //{ 
+        //    return Ok(await Mediator.Send(command));
+        //}
+
     }
 }
