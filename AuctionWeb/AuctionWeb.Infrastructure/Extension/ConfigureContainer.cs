@@ -14,12 +14,18 @@ namespace AuctionWeb.Infrastructure.Extension
 
         public static void ConfigureSwagger(this IApplicationBuilder app)
         {
-            app.UseSwagger();
+            app.UseSwagger(o=> {
+                o.SerializeAsV2 = true;
+            });
 
             app.UseSwaggerUI(setupAction =>
             {
-                setupAction.SwaggerEndpoint("/swagger/OpenAPISpecification/swagger.json", "Onion Architecture API");
+                setupAction.DisplayOperationId();
+
+                setupAction.SwaggerEndpoint("/swagger/OpenAPISpecification/swagger.json", "Auction");
                 setupAction.RoutePrefix = "OpenAPI";
+
+
             });
         }
 
