@@ -34,6 +34,11 @@ import { AuctionReportComponent } from './auction-report/auction-report.componen
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'users', component: BidderComponent },
+      { path: 'items', component: AuctionListComponent },
+      { path: 'itembid', component: AuctionBiddingComponent },
+      { path: 'itembid/:id', component: AuctionBiddingComponent },
+      { path: 'itemhis', component: AuctionReportComponent },
     ])
   ],
   providers: [],

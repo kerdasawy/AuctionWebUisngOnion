@@ -1,1 +1,52 @@
-<p>auction-report works!</p>
+
+<div class="row">
+  <div class="col-lg-2 col-sm-12 d-sm-none">
+
+  </div>
+  <div class="col-lg-8 col-sm-12  m-3 ">
+    <div class="card" style="width: 18rem;">
+      <img src="../../assets/Images/watch.jpg" class="card-img-top" alt="image go here">
+      <div class="card-body">
+        <h5 class="card-title">{{item.name}}</h5>
+        <p>
+          Win bid:{{item.lastBid}}
+        </p>   
+      </div>
+    </div>
+
+    <!--Fill items here-->
+  </div>
+  
+
+  <div class="col-lg-2 col-sm-12 d-sm-none">
+
+  </div>
+</div>
+<div class="row">
+
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>
+          Starting Price
+        </th>
+        <th>Bidder</th>
+        <th>
+          Bid
+          </th>
+        <th>
+          Profit
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of item.history;let last=last">
+        <td *ngIf="last">{{item.price}}</td>
+        <td *ngIf="!last"> </td>
+        <td>{{row.name}}</td>
+        <td>{{row.bid}}</td>
+        <td>{{row.bid-item.price}}  </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

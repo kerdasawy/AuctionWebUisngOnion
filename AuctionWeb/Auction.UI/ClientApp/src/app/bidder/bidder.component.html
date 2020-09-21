@@ -1,1 +1,16 @@
-<p>bidder works!</p>
+
+
+<div class="container">
+  <div class="row m-2" *ngFor="let user of users; index as i">
+    <div class="col-4 p-2">
+      
+    </div>
+    <div class="col-4 p-2">
+      <button class="btn-primary w-100" (click)="selectBidder(user)">{{user.bidderName}}</button>
+    </div>
+    <div class="col-4 p-2">
+       
+    </div>
+  </div>
+
+</div>

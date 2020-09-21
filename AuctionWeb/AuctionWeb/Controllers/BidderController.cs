@@ -8,12 +8,14 @@ using AuctionWeb.Service.Features.BidderFeatures.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 
 namespace AuctionWeb.Controllers
 {
     [ApiController]
     [Route("api/v{version:apiVersion}/Bidder")]
     [ApiVersion("1.0")]
+    //[EnableCors("MyPolicy")]
     public class BidderController : ControllerBase
     {
 

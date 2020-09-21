@@ -27,6 +27,12 @@ namespace AuctionWeb
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            //{
+            //    builder.AllowAnyOrigin()
+            //           .AllowAnyMethod()
+            //           .AllowAnyHeader();
+            //}));
             services.AddController();
 
             services.AddDbContext(Configuration, configRoot);
@@ -49,10 +55,17 @@ namespace AuctionWeb
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory log)
         {
+            app.UseCors(builder =>
+             builder
+             .AllowAnyOrigin()
+             .AllowAnyHeader()
+             .AllowAnyMethod());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+           
+          
 
             app.UseRouting();
 

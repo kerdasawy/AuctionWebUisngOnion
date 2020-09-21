@@ -1,1 +1,44 @@
-<p>auction-list works!</p>
+<div class="container">
+  <div class="row">
+
+    <div class="col-12">
+      <h2>
+        Items ready for auction
+      </h2>
+      <div class="row">
+        <div class="col-lg-3 col-sm-12  m-3 " *ngFor="let item of itemsReady">
+          <div class="card" style="width: 18rem;">
+            <img src="../../assets/Images/watch.jpg" class="card-img-top" alt="image go here">
+            <div class="card-body">
+              <h5 class="card-title">{{item.name}}</h5>
+              <p class="card-text">Price:{{item.price}}</p>
+              <button (click)="bidItem(item.id)" href="#" class="btn btn-primary">Go to bid</button>
+            </div>
+          </div>
+          <!--Fill items here-->
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-12">
+          <h2>Item sloded</h2>
+          <div class="row">
+            <div class="col-lg-3 col-sm-12  m-3 " *ngFor="let item of itemsSold">
+              <div class="card" style="width: 18rem;">
+                <img src="../../assets/Images/watch.jpg" class="card-img-top" alt="image go here">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.name}}</h5>
+                  <p class="card-text">Price:{{item.price}}</p>
+                  <a href="#" class="btn btn-primary">Show bidding</a>
+                </div>  
+              </div>
+              <!--Fill items here-->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </div>
