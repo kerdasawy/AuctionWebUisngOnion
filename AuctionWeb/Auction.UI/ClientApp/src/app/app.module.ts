@@ -39,6 +39,7 @@ import { AuctionReportComponent } from './auction-report/auction-report.componen
       { path: 'itembid', component: AuctionBiddingComponent },
       { path: 'itembid/:id', component: AuctionBiddingComponent },
       { path: 'itemhis', component: AuctionReportComponent },
+      { path: 'itemhis/:id', component: AuctionReportComponent },
     ])
   ],
   providers: [],

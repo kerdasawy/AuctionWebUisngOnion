@@ -30,7 +30,7 @@ namespace AuctionWeb.Service.Features.AuctionFeature.Commands
                 }
                 else
                 {
-                    auction.Item_ID = request.Item_ID;
+                    auction.Item = _context.Items.Find( request.Item_ID);
                     auction.StartDate = request.StartDate;
                     _context.Auctions.Update(auction);
                     await _context.SaveChangesAsync();

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuctionItem } from '../auction-item';
 import { AuctionItemHistory } from '../auction-item';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppServiceService } from '../app-service.service';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-auction-bidding',
   templateUrl: './auction-bidding.component.html',
@@ -11,18 +12,26 @@ import { AppServiceService } from '../app-service.service';
 export class AuctionBiddingComponent implements OnInit {
   public id: number;
   public bidValue: number;
-  public itemReport: AuctionItem = {
+  public item: AuctionItem = {
     id: 1, lastBid: 500, name: "h watch", price: 200, history: [
       { name: "Abdo", bid: 210 }, {
         name: "Abdo2"
         , bid: 220
       }]
+    , bidder_ID: null
   };
     interval: any;
-  constructor(private _Activatedroute: ActivatedRoute, private service:AppServiceService) {
+  constructor(private _Activatedroute: ActivatedRoute, public service: AppServiceService, private router: Router, private http: HttpClient) {
 
     this.id = parseInt(this._Activatedroute.snapshot.paramMap.get("id"));
-    //Get Item From Server
+    //Parse sucessed
+    if (this.id) {
+      //Get Item From Server
+    }
+    else {
+      this.router.navigateByUrl("/"); 
+    }
+    
   }
 
   ngOnInit() {

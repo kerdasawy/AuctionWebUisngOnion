@@ -37,6 +37,7 @@ namespace AuctionWeb
 
             services.AddDbContext(Configuration, configRoot);
 
+
             services.AddAutoMapper();
 
             services.AddAddScopedServices();

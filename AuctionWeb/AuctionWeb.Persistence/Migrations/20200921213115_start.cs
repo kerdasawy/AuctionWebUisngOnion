@@ -2,7 +2,7 @@
 
 namespace AuctionWeb.Persistence.Migrations
 {
-    public partial class start3 : Migration
+    public partial class start : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

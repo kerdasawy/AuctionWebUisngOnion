@@ -13,6 +13,11 @@ namespace AuctionWeb.Domain.Entities
 
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
-        public List<Auction >Auctions { get; set; }
+
+       
+        public virtual Bidder Bidder { get; set; }
+        [ForeignKey("Bidder")]
+        public int? BidderID { get; set; }
+        public   List<Auction >Auctions { get; set; }
     }
 }

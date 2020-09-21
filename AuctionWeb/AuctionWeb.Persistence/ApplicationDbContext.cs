@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualBasic;
+using Microsoft.Extensions.Options;
 
 namespace AuctionWeb.Persistence
 {
@@ -16,7 +17,7 @@ namespace AuctionWeb.Persistence
         }
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
         }
 
        public DbSet<Bidder> Bidders { get; set; }
@@ -27,16 +28,23 @@ namespace AuctionWeb.Persistence
         public DbSet<BidderAuction> BidderAuctions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Auction>().HasOne<Item>(a=>a.Item).WithMany(i=>i.Auctions);
-            modelBuilder.Entity<BidderAuction>().HasOne<Auction>(b => b.Auctions).WithMany(a=>a.Bidders);
-            modelBuilder.Entity<BidderAuction>().HasOne<Bidder>(a => a.Bidders).WithMany(b=>b.Auctions);
+            modelBuilder.Entity<Auction>().HasOne<Item>(a=>a.Item).WithMany(i=>i.Auctions).HasForeignKey(a=>a.Item_ID);
+            modelBuilder.Entity<BidderAuction>().HasOne<Auction>(b => b.Auctions).WithMany(a=>a.Bidders).HasForeignKey(ba=>ba.AuctionID);
+            modelBuilder.Entity<BidderAuction>().HasOne<Bidder>(a => a.Bidders).WithMany(b=>b.Auctions).HasForeignKey(ba=>ba.BidderID);
+            modelBuilder.Entity<Item>().HasOne<Bidder>(i => i.Bidder).WithMany(b => b.Items).HasForeignKey(i=>i.BidderID) ;
+            modelBuilder.Entity<Item>().HasMany<Auction>(i => i.Auctions).WithOne(a => a.Item).HasForeignKey(a=>a.Item_ID);
+            modelBuilder.Entity<Auction>().HasOne<Item>(a => a.Item).WithMany(i => i.Auctions).HasForeignKey(a=>a.Item_ID);
+            
+            modelBuilder.Entity<AuctionBidding>().HasOne<Auction>(ab => ab.Auction).WithMany(a => a.Biddings).HasForeignKey(ab=>ab.Auction_ID);
+            modelBuilder.Entity<AuctionBidding>().HasOne<Bidder>(ab => ab.Bidder).WithMany(a => a.Biddings).HasForeignKey(ab => ab.Bidder_ID);
+            
 
             //seeding Data...
-          
-                #region Seeding Data
 
-                #region Items in store
-                modelBuilder.Entity<Item>().HasData(
+            #region Seeding Data
+
+            #region Items in store
+            modelBuilder.Entity<Item>().HasData(
                            new Item() { Id = 1,ItemName = "Histrorical Watch", Price = 10000 },
                            new Item() { Id = 2, ItemName = "Histrorical Glass", Price = 20000 },
                            new Item() { Id = 3, ItemName = "Histrorical Sword", Price = 50000 },
@@ -70,9 +78,14 @@ namespace AuctionWeb.Persistence
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                .UseSqlServer(@"Server=ABDO-PC\IT1_SQL_2012;Database=AuctionWen.DB;Trusted_Connection=True;");
-            }
+                .UseSqlServer(@"Server=ABDO-PC\IT1_SQL_2012;Database=AuctionWen.DB;Trusted_Connection=True;")
+                
+                ;
+                
 
+
+            }
+            //services.AddDbContext(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         public async Task<int> SaveChangesAsync()

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AppServiceService {
-  public current_User: User;
+  public current_User: User = null;
   public serviceUrl: string = "https://localhost:44356";
   constructor() {
     

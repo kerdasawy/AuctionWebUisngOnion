@@ -7,6 +7,8 @@ namespace AuctionWeb.Domain.Entities
         public Bidder()
         {
             Auctions = new List<BidderAuction>();
+            Items = new List<Item>();
+            Biddings = new List<AuctionBidding>();
         }
         public string BidderName { get; set; }
         public string ContactName { get; set; }
@@ -18,7 +20,11 @@ namespace AuctionWeb.Domain.Entities
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
-        
+
+        public List<Item> Items { get; set; }
         public List<BidderAuction> Auctions { get; set; }
+        public List<AuctionBidding > Biddings{ get; set; }
+
+
     }
 }

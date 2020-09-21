@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuctionItem } from '../auction-item';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppServiceService } from '../app-service.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-auction-report',
@@ -15,9 +18,21 @@ export class AuctionReportComponent implements OnInit {
       , { name: "Abdo2", bid: 240 }
       , { name: "Abdo3", bid: 400 }
       , { name: "Abdo", bid: 500 }
-    ]
+    ], bidder_ID: null
   };
-  constructor() { }
+  public id: number;
+  constructor(private _Activatedroute: ActivatedRoute, public service: AppServiceService, private router: Router, private http: HttpClient) {
+
+    this.id = parseInt(this._Activatedroute.snapshot.paramMap.get("id"));
+    //Parse sucessed
+    if (this.id) {
+      //Get Item From Server
+    }
+    else {
+      this.router.navigateByUrl("/");
+    }
+
+  }
 
   ngOnInit() {
   }

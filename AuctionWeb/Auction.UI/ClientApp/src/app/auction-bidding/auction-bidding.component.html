@@ -8,10 +8,10 @@
       <img src="../../assets/Images/watch.jpg" class="card-img-top" alt="image go here">
       <div class="card-body">
         <h5 class="card-title">{{item.name}}</h5>
-        <p>
+        <p >
           Mini bid:{{item.lastBid}}</p>
         
-        <input id="bidValue" value="{{bidValue}}" type="tel" />
+        <input class="mb-2" id="bidValue" value="{{bidValue}}" type="tel" />
         <button (click)="bidding()" class="btn btn-primary">bid</button>
       </div>
     </div>

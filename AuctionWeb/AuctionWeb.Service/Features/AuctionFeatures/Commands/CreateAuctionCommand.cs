@@ -21,7 +21,7 @@ namespace AuctionWeb.Service.Features.AuctionFeature.Commands
             public async Task<int> Handle(CreateAuctionCommand request, CancellationToken cancellationToken)
             {
                 var auction = new Auction();
-                auction.Item_ID = request.Item_ID;
+                auction.Item = _context.Items.Find( request.Item_ID);
                 auction.StartDate    = request.StartDate;
 
                 _context.Auctions.Add(auction);

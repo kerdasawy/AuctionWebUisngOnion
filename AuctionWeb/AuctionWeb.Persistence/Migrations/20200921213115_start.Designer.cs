@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuctionWeb.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200919040530_start-5")]
-    partial class start5
+    [Migration("20200921213115_start")]
+    partial class start
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,10 +28,7 @@ namespace AuctionWeb.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Item_ID")
+                    b.Property<int?>("Item_ID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -39,7 +36,7 @@ namespace AuctionWeb.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("Item_ID");
 
                     b.ToTable("Auctions");
                 });
@@ -51,17 +48,11 @@ namespace AuctionWeb.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuctionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Auction_ID")
                         .HasColumnType("int");
 
-                    b.Property<float>("BidValue")
-                        .HasColumnType("real");
-
-                    b.Property<int?>("BidderId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("BidValue")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Bidder_ID")
                         .HasColumnType("int");
@@ -71,9 +62,9 @@ namespace AuctionWeb.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuctionId");
+                    b.HasIndex("Auction_ID");
 
-                    b.HasIndex("BidderId");
+                    b.HasIndex("Bidder_ID");
 
                     b.ToTable("AuctionBiddings");
                 });
@@ -118,6 +109,44 @@ namespace AuctionWeb.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Bidders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BidderName = "Abdo",
+                            ContactName = "MR Abdo"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BidderName = "Abdo2",
+                            ContactName = "MR Abdo2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BidderName = "Abdo3",
+                            ContactName = "MR Abdo3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BidderName = "Abdo4",
+                            ContactName = "MR Abdo4"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BidderName = "Abdo5",
+                            ContactName = "MR Abdo5"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            BidderName = "Abdo6",
+                            ContactName = "MR Abdo6"
+                        });
                 });
 
             modelBuilder.Entity("AuctionWeb.Domain.Entities.BidderAuction", b =>
@@ -127,17 +156,17 @@ namespace AuctionWeb.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuctionsId")
+                    b.Property<int>("AuctionID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BiddersId")
+                    b.Property<int>("BidderID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuctionsId");
+                    b.HasIndex("AuctionID");
 
-                    b.HasIndex("BiddersId");
+                    b.HasIndex("BidderID");
 
                     b.ToTable("BidderAuctions");
                 });
@@ -149,6 +178,9 @@ namespace AuctionWeb.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("BidderID")
+                        .HasColumnType("int");
+
                     b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");
 
@@ -157,36 +189,85 @@ namespace AuctionWeb.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BidderID");
+
                     b.ToTable("Items");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ItemName = "Histrorical Watch",
+                            Price = 10000m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ItemName = "Histrorical Glass",
+                            Price = 20000m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ItemName = "Histrorical Sword",
+                            Price = 50000m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ItemName = "Histrorical Hat",
+                            Price = 5000m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ItemName = "Histrorical Paint",
+                            Price = 100000m
+                        });
                 });
 
             modelBuilder.Entity("AuctionWeb.Domain.Entities.Auction", b =>
                 {
                     b.HasOne("AuctionWeb.Domain.Entities.Item", "Item")
                         .WithMany("Auctions")
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("Item_ID");
                 });
 
             modelBuilder.Entity("AuctionWeb.Domain.Entities.AuctionBidding", b =>
                 {
                     b.HasOne("AuctionWeb.Domain.Entities.Auction", "Auction")
-                        .WithMany()
-                        .HasForeignKey("AuctionId");
+                        .WithMany("Biddings")
+                        .HasForeignKey("Auction_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AuctionWeb.Domain.Entities.Bidder", "Bidder")
-                        .WithMany()
-                        .HasForeignKey("BidderId");
+                        .WithMany("Biddings")
+                        .HasForeignKey("Bidder_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AuctionWeb.Domain.Entities.BidderAuction", b =>
                 {
                     b.HasOne("AuctionWeb.Domain.Entities.Auction", "Auctions")
                         .WithMany("Bidders")
-                        .HasForeignKey("AuctionsId");
+                        .HasForeignKey("AuctionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AuctionWeb.Domain.Entities.Bidder", "Bidders")
                         .WithMany("Auctions")
-                        .HasForeignKey("BiddersId");
+                        .HasForeignKey("BidderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AuctionWeb.Domain.Entities.Item", b =>
+                {
+                    b.HasOne("AuctionWeb.Domain.Entities.Bidder", "Bidder")
+                        .WithMany("Items")
+                        .HasForeignKey("BidderID");
                 });
 #pragma warning restore 612, 618
         }
