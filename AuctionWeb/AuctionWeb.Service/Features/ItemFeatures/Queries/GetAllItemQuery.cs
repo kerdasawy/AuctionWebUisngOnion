@@ -27,6 +27,7 @@ namespace AuctionWeb.Service.Features.ItemFeature.Queries
 
                 try
                 {
+                    await AuctionFeature.Commands.AddBidToAuctionCommand.checkAuctionTimes(_context);
                     var itemList = await _context.Items.ToListAsync();
                     //adding items to auction by defualt
                     var notInAuctionItems = itemList.Where(i => i.Auctions.Count() == 0).ToArray();
@@ -48,6 +49,7 @@ namespace AuctionWeb.Service.Features.ItemFeature.Queries
                     var res = itemList.Select(i => new AuctionItemViewModel()
                     {
                         name = i.ItemName,
+                        Item_ID = i.Id,
                         price = i.Price,
                         bidder_ID = i.Bidder?.Id,
                         history = (i.Auctions.Last().Biddings.Count()>0)?i.Auctions.Last().Biddings.Select(b => new AuctionItemHistoryViewModel()
@@ -57,7 +59,7 @@ namespace AuctionWeb.Service.Features.ItemFeature.Queries
                         }).ToArray():null
                    ,
                         id = i.Auctions.Last().Id,
-                        lastBid = (i.Auctions.Last().Biddings.Count() > 0) ?  i.Auctions.Last().Biddings.OrderByDescending(bb => bb.BiddingTime).FirstOrDefault()?.BidValue ?? 0:0
+                        lastBid = (i.Auctions.Last().Biddings.Count() > 0) ?  i.Auctions.Last().Biddings.OrderByDescending(bb => bb.BiddingTime).FirstOrDefault()?.BidValue ?? i.Price : i.Price
 
 
 

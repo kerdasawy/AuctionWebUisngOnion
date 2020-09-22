@@ -12,7 +12,7 @@ namespace AuctionWeb.Domain.Entities
             Biddings = new List<AuctionBidding>();
         }
         [ForeignKey("Item")]
-        public int? Item_ID { get; set; }
+        public int Item_ID { get; set; }
        
         public virtual Item Item { get; set; }
         public DateTime  StartDate { get; set; }

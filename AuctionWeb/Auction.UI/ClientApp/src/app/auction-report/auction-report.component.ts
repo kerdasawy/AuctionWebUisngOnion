@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuctionReportComponent implements OnInit {
   public item: AuctionItem = {
-    id: 1, lastBid: 500, name: "h watch", price: 200, history: [
+    id: 1,  item_ID:1, lastBid: 500, name: "h watch", price: 200, history: [
       { name: "Abdo", bid: 210 }
       , { name: "Abdo2", bid: 220 }
       , { name: "Abdo", bid: 230 }

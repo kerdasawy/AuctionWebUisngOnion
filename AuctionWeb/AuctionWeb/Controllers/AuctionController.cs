@@ -56,11 +56,12 @@ namespace AuctionWeb.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        //[HttpPut("{id} , {bID} , {bid}")]
-        //public async Task<IActionResult> Bid( AddBidToAuctionCommand command)
-        //{ 
-        //    return Ok(await Mediator.Send(command));
-        //}
+        [HttpPut("{auctionID} , {bidderID} , {bid}")]
+        public async Task<IActionResult> Bid(int auctionID , int bidderID , decimal bid)
+        {
+            AddBidToAuctionCommand command = new AddBidToAuctionCommand() { AuctionID =auctionID , BidderID = bidderID , Bid= bid };
+            return Ok(await Mediator.Send(command));
+        }
 
     }
 }

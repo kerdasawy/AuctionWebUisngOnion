@@ -8,6 +8,7 @@ namespace AuctionWeb.Persistence.ViewModel
     {
 
         public int id { get; set; }
+        public int Item_ID { get; set; }
         public string name { get; set; }
         public decimal price { get; set; }
         public decimal lastBid { get; set; }

@@ -13,20 +13,23 @@ export class AuctionBiddingComponent implements OnInit {
   public id: number;
   public bidValue: number;
   public item: AuctionItem = {
-    id: 1, lastBid: 500, name: "h watch", price: 200, history: [
+    id: 1,  item_ID:1, lastBid: 500, name: "h watch", price: 200, history: [
       { name: "Abdo", bid: 210 }, {
         name: "Abdo2"
         , bid: 220
       }]
     , bidder_ID: null
   };
-    interval: any;
+  interval: any;
+  public getAllItemsUrl: string = "/api/v1/item/";
   constructor(private _Activatedroute: ActivatedRoute, public service: AppServiceService, private router: Router, private http: HttpClient) {
 
     this.id = parseInt(this._Activatedroute.snapshot.paramMap.get("id"));
     //Parse sucessed
     if (this.id) {
       //Get Item From Server
+
+      this.http.get<AuctionItem>(this.service.serviceUrl + this.getAllItemsUrl + this.id).subscribe(s => this.item = s);
     }
     else {
       this.router.navigateByUrl("/"); 
