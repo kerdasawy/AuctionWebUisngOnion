@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace AuctionWeb.Service.Features.AuctionFeature.Commands
 {
@@ -26,14 +27,14 @@ namespace AuctionWeb.Service.Features.AuctionFeature.Commands
             {
                 //Check in bidder in auction
                 //Check if the bid is bigger than last on
-                var lastBid = _context.AuctionBiddings.Where(a => a.Auction_ID == request.AuctionID).OrderByDescending(o => o.BidValue).FirstOrDefault();
-                var auctionObj = _context.Auctions.Find(request.AuctionID);
+                var lastBid = _context.AuctionBiddings.Include(b=>b.Auction).Include(b=>b.Bidder).Where(a => a.Auction_ID == request.AuctionID).OrderByDescending(o => o.BidValue).FirstOrDefault();
+                var auctionObj = _context.Auctions.Include(a => a.Item).Where(a=>a.Id == request.AuctionID).First();
                 var item =( auctionObj !=null)? auctionObj.Item?? _context.Items.Find(auctionObj.Item_ID):null;
                 await AddBidToAuctionCommand.checkAuctionTimes(_context);
                 //Check if the bid is bigger than last on
                 if (!item.BidderID.HasValue&&((lastBid!=null&& lastBid.BidValue<request.Bid  )||
                     //Frist Bid
-                    (auctionObj != null &&  item.Price < request.Bid)))
+                    (lastBid == null && auctionObj != null &&  item.Price < request.Bid)))
                 {
                     //Add bid
                     var bidding = new AuctionBidding() {  Auction_ID = request.AuctionID , Bidder_ID = request.BidderID , BidValue = request.Bid, BiddingTime = DateTime.Now};
@@ -59,14 +60,22 @@ namespace AuctionWeb.Service.Features.AuctionFeature.Commands
         {
             DateTime now = DateTime.Now;
             //If the last bit passes 1 min the auction winner is last bid
-            var seacnd = _context.Auctions.Where(a => !a.Item.BidderID.HasValue && a.Biddings.Count > 0).Select(a =>
+            var seacnd = _context.Auctions
+                .Include(a=>a.Item )
+                .Include(a=>a.Biddings)
+                .Include(a=>a.Bidders)
+                .Where(a => !a.Item.BidderID.HasValue && a.Biddings.Count > 0).Select(a =>
             EF.Functions.DateDiffSecond( a.Biddings.OrderByDescending(b => b.BiddingTime).First().BiddingTime,now)
             ).ToArray();
           
-            var res = await _context.Auctions.Where(a => !a.Item.BidderID.HasValue
+            var res = await _context.Auctions
+                .Include(a => a.Item)
+                .Include(a => a.Biddings)
+                .Include(a => a.Bidders).Where(a => !a.Item.BidderID.HasValue
             && a.Biddings.Count > 0
             && EF.Functions.DateDiffSecond (a.Biddings.OrderByDescending(b => b.BiddingTime).First().BiddingTime,now) >= AuctionTimeOut
             ).ToArrayAsync();
+       
             foreach (var item in res)
             {
                 item.Item.BidderID = item.Biddings.OrderByDescending(b => b.BiddingTime).First().Bidder_ID;

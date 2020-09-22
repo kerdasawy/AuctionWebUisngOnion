@@ -30,7 +30,7 @@
               class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/']">{{service.current_User.bidderName}}</a>
+            <a class="nav-link text-dark" [routerLink]="['/users']">{{service.current_User.bidderName}}</a>
           </li>
           <li *ngIf="!service.current_User" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/users']">Login</a>

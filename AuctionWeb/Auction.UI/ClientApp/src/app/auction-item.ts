@@ -7,6 +7,9 @@ export class AuctionItem {
   public lastBid: number;
   public history: AuctionItemHistory[];
   public bidder_ID: number;
+  public lastBidder: string;
+  public lastBidderID: number;
+  public ticksRemain: number;
 }
 export class AuctionItemHistory {
 

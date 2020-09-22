@@ -8,11 +8,16 @@
       <img src="../../assets/Images/watch.jpg" class="card-img-top" alt="image go here">
       <div class="card-body">
         <h5 class="card-title">{{item.name}}</h5>
-        <p >
-          Mini bid:{{item.lastBid}}</p>
-        
-        <input class="mb-2" id="bidValue" value="{{bidValue}}" type="tel" />
+        <p>
+          Mini bid:{{item.lastBid}}
+        </p>
+        <p *ngIf="this.service.current_User&&this.service.current_User.id==item.lastBidderID">Last bidder:You</p>
+        <p *ngIf="this.service.current_User.id!=item.lastBidderID">Last bidder:{{item.lastBidder}}</p>
+        <p *ngIf=" item.ticksRemain>0">Time to end Auction:{{item.ticksRemain}}</p>
+        <input class="mb-2" id="bidValue" [(ngModel)]="bidValue" type="tel" />
         <button (click)="bidding()" class="btn btn-primary">bid</button>
+        <p *ngIf="bidID>0 && this.service.current_User&&this.service.current_User.id==item.lastBidderID" class="sucess">Your Bid has been Succeded!</p>
+        <p *ngIf="bidID==0" class="error">Your Bid is not acceped</p>
       </div>
     </div>
 

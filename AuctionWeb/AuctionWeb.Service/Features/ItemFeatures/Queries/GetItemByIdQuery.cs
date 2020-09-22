@@ -25,7 +25,12 @@ namespace AuctionWeb.Service.Features.ItemFeature.Queries
                 try
                 {
                     await AuctionFeature.Commands.AddBidToAuctionCommand.checkAuctionTimes(_context);
-                    var itemList = await _context.Items.Where(i=>i.Id==request.Id).ToListAsync();
+                    var itemList = await _context.Items
+                        .Include(i=>i.Bidder)
+                        .Include(i=>i.Auctions)
+                        .ThenInclude(a=>a.Biddings)
+                        .ThenInclude(b=>b.Bidder)
+                        .Where(i=>i.Id==request.Id).ToListAsync();
                     //adding items to auction by defualt
                     var notInAuctionItems = itemList.Where(i => i.Auctions.Count() == 0).ToArray();
                     foreach (var item in notInAuctionItems)
@@ -49,14 +54,18 @@ namespace AuctionWeb.Service.Features.ItemFeature.Queries
                         Item_ID = i.Id,
                         price = i.Price,
                         bidder_ID = i.Bidder?.Id,
-                        history = (i.Auctions.Last().Biddings.Count() > 0) ? i.Auctions.Last().Biddings.Select(b => new AuctionItemHistoryViewModel()
+                        LastBidder = (i.Auctions.Last().Biddings.Count() > 0) ? i.Auctions.Last().Biddings.OrderByDescending(bb => bb.BiddingTime).FirstOrDefault().Bidder.BidderName : "",
+                        LastBidderID = (i.Auctions.Last().Biddings.Count() > 0) ? i.Auctions.Last().Biddings.OrderByDescending(bb => bb.BiddingTime).FirstOrDefault().Bidder_ID : 0,
+                        TicksRemain =  (i.Auctions.Last().Biddings.Count() > 0) ? (AuctionFeature.Commands.AddBidToAuctionCommand.AuctionTimeOut - 
+                                    (int)(DateTime.Now - i.Auctions.Last().Biddings.OrderByDescending(bb => bb.BiddingTime).FirstOrDefault().BiddingTime).TotalSeconds) : 0,
+                        history = ( i.Auctions.Last().Biddings.Count() > 0) ? i.Auctions.Last().Biddings.Select(b => new AuctionItemHistoryViewModel()
                         {
                             bid = b.BidValue,
                             name = b.Bidder.BidderName
                         }).ToArray() : null
                    ,
                         id = i.Auctions.Last().Id,
-                        lastBid = (i.Auctions.Last().Biddings.Count() > 0) ? i.Auctions.Last().Biddings.OrderByDescending(bb => bb.BiddingTime).FirstOrDefault()?.BidValue ?? i.Price : i.Price
+                        lastBid = (i.Auctions.Last().Biddings.Count() > 0) ? i.Auctions.Last().Biddings.OrderByDescending(bb => bb.BiddingTime).FirstOrDefault().BidValue : i.Price
 
 
 

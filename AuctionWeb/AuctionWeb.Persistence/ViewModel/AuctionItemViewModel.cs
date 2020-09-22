@@ -14,6 +14,9 @@ namespace AuctionWeb.Persistence.ViewModel
         public decimal lastBid { get; set; }
         public AuctionItemHistoryViewModel[] history { get; set; }
         public int? bidder_ID { get; set; }
+        public string LastBidder { get; set; } ="";
+        public int LastBidderID { get; set; } = 0;
+        public int TicksRemain { get; set; } = 60;
     }
     public class AuctionItemHistoryViewModel
     {

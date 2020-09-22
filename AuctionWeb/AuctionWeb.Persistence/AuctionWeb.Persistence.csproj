@@ -16,4 +16,8 @@
     <ProjectReference Include="..\AuctionWeb.Domain\AuctionWeb.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuctionWeb.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200921213115_start")]
+    [Migration("20200922111551_start")]
     partial class start
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace AuctionWeb.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Item_ID")
+                    b.Property<int>("Item_ID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -230,7 +230,9 @@ namespace AuctionWeb.Persistence.Migrations
                 {
                     b.HasOne("AuctionWeb.Domain.Entities.Item", "Item")
                         .WithMany("Auctions")
-                        .HasForeignKey("Item_ID");
+                        .HasForeignKey("Item_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AuctionWeb.Domain.Entities.AuctionBidding", b =>

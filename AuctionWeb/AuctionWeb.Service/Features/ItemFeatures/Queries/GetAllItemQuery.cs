@@ -28,8 +28,16 @@ namespace AuctionWeb.Service.Features.ItemFeature.Queries
                 try
                 {
                     await AuctionFeature.Commands.AddBidToAuctionCommand.checkAuctionTimes(_context);
-                    var itemList = await _context.Items.ToListAsync();
+                    var itemList = await _context.Items.Include(i=>i.Auctions).Include(i=>i.Bidder).ToListAsync();
                     //adding items to auction by defualt
+
+                    //var endedAuctions = (from a in _context.Auctions
+                    //                     join i in _context.Items on a.Item_ID equals i.Id
+                    //                     join b in _context.AuctionBiddings on a.Id equals b.Auction_ID
+                    //                     join bidder in _context.Bidders on b.Bidder_ID equals bidder.Id
+                    //                     where !i.BidderID.HasValue
+                    //                     select { }
+                    //             );
                     var notInAuctionItems = itemList.Where(i => i.Auctions.Count() == 0).ToArray();
                     foreach (var item in notInAuctionItems)
                     {
@@ -52,10 +60,10 @@ namespace AuctionWeb.Service.Features.ItemFeature.Queries
                         Item_ID = i.Id,
                         price = i.Price,
                         bidder_ID = i.Bidder?.Id,
-                        history = (i.Auctions.Last().Biddings.Count()>0)?i.Auctions.Last().Biddings.Select(b => new AuctionItemHistoryViewModel()
+                        history = ( i.Auctions.Last().Biddings.Count()>0)?i.Auctions.Last().Biddings.Select(b => new AuctionItemHistoryViewModel()
                         {
                             bid = b.BidValue,
-                            name = b.Bidder.BidderName
+                            name = _context.Bidders.Find( b.Bidder_ID).BidderName
                         }).ToArray():null
                    ,
                         id = i.Auctions.Last().Id,
