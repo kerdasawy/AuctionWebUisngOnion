@@ -42,7 +42,7 @@ export class AuctionBiddingComponent implements OnInit {
         if (compont.item.ticksRemain>0) {
           compont.item.ticksRemain--;
         }
-        else if (compont.item.ticksRemain == 0 && compont.item.lastBidder != "") {
+        else if (compont.item.ticksRemain<= 0 && compont.item.lastBidderID) {
           this.router.navigateByUrl("/itemhis/" + compont.item.id.toString()); 
         }
         //alert("test");
